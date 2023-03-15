@@ -101,6 +101,125 @@ Tu computador estará esperando datos. Ten presente que si luego quieres otra ap
 
 ## ¿Cómo construir la aplicación en Unity?
 
+Ahora que ya sabes que tu aplicación móvil funciona, vas a construir la aplicación en Unity. Crea un proyecto y adiciona a la escena un GameObject vacío. A ese GameObject le puedes colocar el siguiente Script:
+
+```csharp
+
+using System.Collections;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading;
+using UnityEngine;
+
+public class comm : MonoBehaviour
+{
+
+    private static comm instance;
+    private Thread receiveThread;
+    private UdpClient receiveClient;
+    private IPEndPoint receiveEndPoint;
+    private string ip = "127.0.0.1";
+    private int receivePort = 6666;
+    private bool isInitialized;
+    private Queue receiveQueue;
+    private GameObject sphere;
+    private Material m_Material;
+
+    private void Awake()
+    {
+        Initialize();
+    }
+
+    private void Start()
+    {
+       
+        sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);        
+        m_Material = sphere.GetComponent<Renderer>().material;
+    }
+
+    private void Initialize()
+    {
+        instance = this;
+        receiveEndPoint = new IPEndPoint(IPAddress.Parse(ip), receivePort);
+        receiveClient = new UdpClient(receivePort);
+        receiveQueue = Queue.Synchronized(new Queue());
+        receiveThread = new Thread(new ThreadStart(ReceiveDataListener));
+        receiveThread.IsBackground = true;
+        receiveThread.Start();
+        isInitialized = true;
+    }
+
+    private void ReceiveDataListener()
+    {
+        while (true)
+        {
+            try
+            {
+                byte[] data = receiveClient.Receive(ref receiveEndPoint);
+                string text = Encoding.UTF8.GetString(data);
+                SerializeMessage(text);
+            }
+            catch (System.Exception ex)
+            {
+                Debug.Log(ex.ToString());
+            }
+        }
+    }
+
+    private void SerializeMessage(string message)
+    {
+        try
+        {
+         receiveQueue.Enqueue(message);
+        }
+        catch (System.Exception e)
+        {
+            Debug.Log(e.ToString());
+        }
+    }
+
+    private void OnDestroy()
+    {
+        TryKillThread();
+    }
+
+    private void OnApplicationQuit()
+    {
+        TryKillThread();
+    }
+
+    private void TryKillThread()
+    {
+        if (isInitialized)
+        {
+            receiveThread.Abort();
+            receiveThread = null;
+            receiveClient.Close();
+            receiveClient = null;
+            Debug.Log("Thread killed");
+            isInitialized = false;
+        }
+    }
+
+    void Update()
+    {
+        if (receiveQueue.Count != 0)
+        {
+            string message = (string)receiveQueue.Dequeue();
+            if(message == "off") m_Material.color = Color.black;
+            if(message == "on") m_Material.color = Color.red;
+            else m_Material.color = Color.yellow;
+        }
+    }
+}
+
+```
+
 ## ¿Cómo probar la aplicación?
+
+Ahora para probar la aplicación en Unity usarás ScriptCommunicator, pero esta vez lo usarás para enviar información a Unity.
+
 
 ## ¿Cómo integrar las aplicaciones y probar que todo esté bien?
