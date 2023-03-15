@@ -47,6 +47,7 @@ Ahora te pediré que hagas la interfaz de usuario que verás en las siguiente im
 
 ![image](https://user-images.githubusercontent.com/2473101/225300548-c5f7612b-7de8-41dc-931f-ad178d1fec4d.png)
 
+Solo nos falta agregar un componente que viene como una extensión. Este componente es que el que permite enviar información por UDP. La extesión la puedes descargar en este si
 
 
 http://ullisroboterseite.de/android-AI2-UDP-en.html
