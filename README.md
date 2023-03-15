@@ -70,9 +70,34 @@ Primero tendrás que instalar la aplicacióin en tu celular. La siguiente imagen
 
 Selecciona Android App (apk). Ten presente que deberás configurar los permisos necesarios en tu celular Android que te permitan instalar aplicaciones de fuentes desconocidas. Si no haces esto no podrás instalar la aplicación.
 
-Para probar la aplicación no te recomendaré que construyas otra aplicación en Unity. 
+Para probar la aplicación no te recomendaré que construyas otra aplicación en Unity. ¿Qué pasa si tu aplicación no funciona? ¿Es problema de la aplicación móvil o de la aplicación que construiste en Unity para probar? ¿Ves el punto? Entonces para probar la aplicación móvil necesitarás algo como ScriptCommunicator para probar. 
 
+Para realizar las pruebas debes:
 
+1. Crear una red inalámbrica privada. No lo hagas con la red pública de la U. Para crear la red puedes usar el celular o un computador con tarjeta de red inalámbrica.    con ambos dispositivos puedes crear un punto de acceso.
+2. Una vez creado el punto de acceso debes conectar a este el celular y el computador.
+3. En tu computador abre una terminal o símbolo del sistema y lanza el comando ipconfig. Toma nota de la Dirección IPv4 de tu adapatador inalámbrico conectado al punto    de acceso. Vas a necesitar esta dirección en la aplicación móvil.
+
+![image](https://user-images.githubusercontent.com/2473101/225361555-beda1dda-6648-44a7-a5d1-1c85cf266eac.png)
+
+![image](https://user-images.githubusercontent.com/2473101/225361477-60d8654d-7293-4ca0-8077-ec2700939815.png)
+
+4. Abre ScriptCommunicator y crea un socket UDP. El puerto puede ser 6666.
+
+![image](https://user-images.githubusercontent.com/2473101/225361314-2f125e3a-29e5-487f-b11a-85c3deaa746e.png)
+
+Selecciona current interface como socket y dale click en connect:
+
+![image](https://user-images.githubusercontent.com/2473101/225362034-5e08c6dc-5027-4f43-936d-3c7b6eca01c5.png)
+
+Deberás ver en la parte inferior izquierda de la interfaz principal de ScriptCommunicator:
+
+![image](https://user-images.githubusercontent.com/2473101/225362235-e1776ac2-6f78-4dbb-b6ff-ed7423f39d3c.png)
+
+Tu computador estará esperando datos. Ten presente que si luego quieres otra aplicación escuchando en el mismo puerto, primero tendrás que desconectar ScriptCommunicator y al contrario. ¿Vale?
+
+5. Abre la aplicación móvil y configura la dirección IP del computador y el puerto en el cual ScriptCommunicator estará escuchando los mensajes enviados por UDP. 
+   Escribe un Message y dale click en Send to Unity. Deberías ver tu mensaje en ScriptCommunicator. ¿Y si no funciona? Verifica que el firewall esté desactivado. PERO    no olvides activarlo de nuevo una vez termines de trabajar.
 
 ## ¿Cómo construir la aplicación en Unity?
 
