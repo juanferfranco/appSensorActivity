@@ -9,6 +9,7 @@ La actividad estará dividida en fases que responderán a las siguiente pregunta
 3. ¿Cómo construir la aplicación en Unity?
 4. ¿Cómo probar la aplicación?
 5. ¿Cómo integrar las aplicaciones y probar que todo esté bien?
+6. ¿Cómo transfiero lo practicado a otro caso específico?
 
 ## ¿Cómo construir la aplicación móvil?
 
@@ -101,64 +102,63 @@ Tu computador estará esperando datos. Ten presente que si luego quieres otra ap
 
 ## ¿Cómo construir la aplicación en Unity?
 
-Ahora que ya sabes que tu aplicación móvil funciona, vas a construir la aplicación en Unity. Crea un proyecto y adiciona a la escena un GameObject vacío. A ese GameObject le puedes colocar el siguiente Script:
+Ahora que ya sabes que tu aplicación móvil funciona, vas a construir la aplicación en Unity. Crea un proyecto y adiciona a la escena un GameObject vacío. A ese GameObject le puedes colocar el siguiente Script (no olvides nombrar el Script con el nombre de la clase para que puedas agregarlo como componente al GameObject):
 
 ```csharp
 
 using System.Collections;
-using System.Collections.Generic;
-using System.Net;
 using System.Net.Sockets;
-using System.Text;
+using System.Net;
 using System.Threading;
 using UnityEngine;
+using System.Text;
 
-public class comm : MonoBehaviour
+public class UDPSensorApp : MonoBehaviour
 {
 
-    private static comm instance;
-    private Thread receiveThread;
-    private UdpClient receiveClient;
-    private IPEndPoint receiveEndPoint;
-    private string ip = "127.0.0.1";
-    private int receivePort = 6666;
-    private bool isInitialized;
-    private Queue receiveQueue;
     private GameObject sphere;
     private Material m_Material;
 
-    private void Awake()
-    {
-        Initialize();
-    }
 
-    private void Start()
+    private Thread receiveThread;
+    private bool isInitialized;
+    private Queue receiveQueue;
+
+
+    private UdpClient receiveClient;
+    private int receivePort = 6666;
+    
+
+    void Start()
     {
-       
-        sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);        
+        sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        sphere.transform.localScale = new Vector3 (5f, 5f, 5f);
         m_Material = sphere.GetComponent<Renderer>().material;
-    }
 
-    private void Initialize()
-    {
-        instance = this;
-        receiveEndPoint = new IPEndPoint(IPAddress.Parse(ip), receivePort);
+
+
         receiveClient = new UdpClient(receivePort);
         receiveQueue = Queue.Synchronized(new Queue());
         receiveThread = new Thread(new ThreadStart(ReceiveDataListener));
         receiveThread.IsBackground = true;
         receiveThread.Start();
         isInitialized = true;
+
     }
 
     private void ReceiveDataListener()
     {
+        IPEndPoint receiveEndPoint = new IPEndPoint(0, 0);
+
         while (true)
         {
             try
             {
                 byte[] data = receiveClient.Receive(ref receiveEndPoint);
                 string text = Encoding.UTF8.GetString(data);
+                
+
+                Debug.Log("Data received from " + receiveEndPoint + ": " + text);
                 SerializeMessage(text);
             }
             catch (System.Exception ex)
@@ -172,7 +172,7 @@ public class comm : MonoBehaviour
     {
         try
         {
-         receiveQueue.Enqueue(message);
+            receiveQueue.Enqueue(message);
         }
         catch (System.Exception e)
         {
@@ -203,13 +203,14 @@ public class comm : MonoBehaviour
         }
     }
 
+
     void Update()
     {
         if (receiveQueue.Count != 0)
         {
             string message = (string)receiveQueue.Dequeue();
-            if(message == "off") m_Material.color = Color.black;
-            if(message == "on") m_Material.color = Color.red;
+            if (message == "off") m_Material.color = Color.black;
+            else if (message == "on") m_Material.color = Color.red;
             else m_Material.color = Color.yellow;
         }
     }
@@ -219,7 +220,56 @@ public class comm : MonoBehaviour
 
 ## ¿Cómo probar la aplicación?
 
-Ahora para probar la aplicación en Unity usarás ScriptCommunicator, pero esta vez lo usarás para enviar información a Unity.
+Ahora, para probar la aplicación hecha con Unity usarás ScriptCommunicator para enviar información. Recuerda que con la aplicación móvil ScriptCommunicator servía para enviar. En este caso lo usarás para transmitir. Para y piensa. ¿Entiendes el cambio de rol?
 
+Nota en la siguiente imagen los números de los puertos.
+
+![image](https://user-images.githubusercontent.com/2473101/225459592-9772541b-4b9b-4d59-9654-702529a80147.png)
 
 ## ¿Cómo integrar las aplicaciones y probar que todo esté bien?
+
+Una vez las aplicaciones se probaron de manera independiente y sabes que funcionan es hora de probar la integración de las mismas. Por favor, nunca te saltes los pasos de pruebas individuales. Verás que si pruebas cada aplicación por separado, al llegar a la integración ya no tendrás mayores dificultades. En este caso, si no 
+te funciona la integración, es posible que aún tengas activado el firewall de Windows, así que no olvides desctivarlo mientras haces las pruebas.
+
+## ¿Cómo transfiero lo practicado a otro caso específico?
+
+En este punto de la actividad estarás pensando que YA APRENDISTE, déjame decirte que nada más alejado de la realidad. Para aprender primero necesitas enteder y luego APLICAR, es decir, hacer transferencia de lo que entendiste de un contexto a otro.
+
+Como seguramente lo que quieres es aprender, te voy a proponer tres ejercicios:
+
+
+1. Vas a estudiar detenidamente la aplicación que ya tienes funcionando y te vas a asegurar de entender todo lo que hay allí antes de continuar. Esta tarea puede ser      larga o no, todo depende del conocimiento previo que tengas. No olvides que tienes a tu disposición Internet y chatGPT ( :) ).
+2. Ahora vas a realizar una modificación. Envía como mensaje un objeto JSON que corresponda al valor de tres números en puntos flotante. Los números los    
+   identificaras con las claves scaleX, scaleY y scaleZ. Luego, vas a crear otro script en Unity que sea capaz de recibir el JSON y modificar la escala de la esfera      con los valores de scaleX, scaleY y scaleZ.
+   
+   Para resolver este problema te sugiero, si quieres, que crees una clase para crear los objetos que almacenarán los valores:
+   
+   ```csharp
+   public class MessageData
+   {
+       public float scaleX;
+       public float scaleY;
+       public float scaleZ;
+   }
+   ```
+   
+   Y luego podrás convertir la cadena con el JSON al objeto así:
+   
+   ```csharp
+   MessageData  msgData = JsonUtility.FromJson<MessageData>(message);
+   ```
+   
+   Ten presente que message es la varible contiene la referencia a la cadena con el JSON.
+   
+   
+3. Una vez te funcione lo anterior, vas a modificar la aplicación móvil y vas a leer un sensor. En el ejemplo agregamos un acelerómetro, pero si quieres lo puedes        cambiar por otro sensor. Luego convertirás los valores del sensor a JSON y los enviaras por UDP. Todo esto lo realizarás cuando presiones el botón Send to Unity.      Define una manera de  visualizar los valores recibidos. 
+
+
+
+
+
+
+
+
+
+
