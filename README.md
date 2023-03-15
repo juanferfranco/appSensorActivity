@@ -57,13 +57,22 @@ Para completar la interfaz de usuario solo debe agregar el componente UDPXmitter
 
 ![image](https://user-images.githubusercontent.com/2473101/225302743-7b7d179d-3479-4d98-8ca0-5524da4e5551.png)
 
-Ahora vas a seleccionar la vista de programación (Blocks) para añadir el comportamiento que tendrá la aplicación.
+Ahora vas a seleccionar la vista de programación (Blocks) para añadir el comportamiento que tendrá la aplicación. El programa debe quedarte así:
 
-
-
+![image](https://user-images.githubusercontent.com/2473101/225316163-dedc2071-456b-45c8-8be9-62fc5585dcc8.png)
 
 
 ## ¿Cómo probar la aplicación?
+
+Para probar la aplicación necesitarás instalarla en el celular y usar un software de prueba como ScriptCommunicator. La siguiente imagen te muestra como construir y descargar la aplicación:
+
+![image](https://user-images.githubusercontent.com/2473101/225316717-1a651530-5dee-4471-b7ff-531f054df171.png)
+
+Selecciona Android App (apk). Ten presente que deberás configurar los permisos necesarios en tu celular Android que te permitan instalar aplicaciones de fuentes desconocidas. Si no haces esto no podrás instalar la aplicación.
+
+![image](https://user-images.githubusercontent.com/2473101/225317010-f33a70b2-058e-4586-b339-1c13320e9cac.png)
+
+
 
 ## ¿Cómo construir la aplicación en Unity?
 
