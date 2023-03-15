@@ -47,10 +47,22 @@ Ahora te pediré que hagas la interfaz de usuario que verás en las siguiente im
 
 ![image](https://user-images.githubusercontent.com/2473101/225300548-c5f7612b-7de8-41dc-931f-ad178d1fec4d.png)
 
-Solo nos falta agregar un componente que viene como una extensión. Este componente es que el que permite enviar información por UDP. La extesión la puedes descargar en este si
+Solo nos falta agregar un componente que viene como una extensión. Este componente es que el que permite enviar información por UDP. La extesión la puedes descargar en [este](http://ullisroboterseite.de/android-AI2-UDP-en.html) sitio. Verás el enlace de descarga en la sección Downloads.
+
+Una vez descargues la extensión, que será un archivo con extensión .zip, lo debes descomprimir e importar a appinventor:
+
+![image](https://user-images.githubusercontent.com/2473101/225302598-d7b56caf-c6b4-487d-8821-09f46b2e29e2.png)
+
+Para completar la interfaz de usuario solo debe agregar el componente UDPXmitter:
+
+![image](https://user-images.githubusercontent.com/2473101/225302743-7b7d179d-3479-4d98-8ca0-5524da4e5551.png)
+
+Ahora vas a seleccionar la vista de programación (Blocks) para añadir el comportamiento que tendrá la aplicación.
 
 
-http://ullisroboterseite.de/android-AI2-UDP-en.html
+
+
+
 ## ¿Cómo probar la aplicación?
 
 ## ¿Cómo construir la aplicación en Unity?
