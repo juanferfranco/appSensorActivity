@@ -64,13 +64,13 @@ Ahora vas a seleccionar la vista de programación (Blocks) para añadir el compo
 
 ## ¿Cómo probar la aplicación?
 
-Para probar la aplicación necesitarás instalarla en el celular y usar un software de prueba como ScriptCommunicator. La siguiente imagen te muestra como construir y descargar la aplicación:
+Primero tendrás que instalar la aplicacióin en tu celular. La siguiente imagen te muestra como construir y descargar la aplicación:
 
 ![image](https://user-images.githubusercontent.com/2473101/225316717-1a651530-5dee-4471-b7ff-531f054df171.png)
 
 Selecciona Android App (apk). Ten presente que deberás configurar los permisos necesarios en tu celular Android que te permitan instalar aplicaciones de fuentes desconocidas. Si no haces esto no podrás instalar la aplicación.
 
-![image](https://user-images.githubusercontent.com/2473101/225317010-f33a70b2-058e-4586-b339-1c13320e9cac.png)
+Para probar la aplicación no te recomendaré que construyas otra aplicación en Unity. 
 
 
 
